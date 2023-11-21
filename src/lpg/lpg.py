@@ -64,10 +64,10 @@ def lpg(
     title_slug, template_data = web_interface.get_leetcode_template(
         title_slug, url, lang
     )
-    title_slug = "least-sum"
-    file_interface.create_project(title_slug, directory, template_data, force)
+    path = file_interface.create_project(title_slug, directory, template_data, force)
     if git_init:
         subprocess.run("git init")
+    click.echo(f"Successfully created project at {path}!")
 
 
 if __name__ == "__main__":

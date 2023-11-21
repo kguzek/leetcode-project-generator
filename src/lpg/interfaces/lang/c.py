@@ -11,20 +11,21 @@ TEST_FILE_TEMPLATE = """\
 int main() {{
     {param_declarations};
     {returnType} result = {name}({params_call});
-    printf("result: %d\n", result);
+    printf("result: %d\\n", result);
     return 0;
 }}
 """
 
 FUNCTION_SIGNATURE_PATTERN = re.compile(
-    r"(?P<returnType>\w+(?:\[\]|\*)?) (?P<name>\w+)\((?P<params>(?:\w+(?:\[\]|\*)? \w+(?:, )?)+)\) {"
+    r"^(?P<returnType>(?:struct )?\w+(?:\[\]|\*)?) (?P<name>\w+)\((?P<params>(?:(?:struct )?\w+(?:\[\]|\*)? \w+(?:, )?)+)\)\s?{$",
+    flags=re.MULTILINE,
 )
 
 
 def create_c_project(template: str):
     """Creates the project template for C."""
 
-    match = FUNCTION_SIGNATURE_PATTERN.search(template, re.MULTILINE)
+    match = FUNCTION_SIGNATURE_PATTERN.search(template)
     if match is None:
         raise RuntimeError("Fatal error: project template doesn't match regex.")
     groups = match.groupdict()
@@ -37,7 +38,7 @@ def create_c_project(template: str):
 
     params = groups["params"].split(", ")
     groups["param_declarations"] = groups["params"].replace(", ", ";\n    ")
-    groups["params_call"] = ", ".join(param.split()[1] for param in params)
+    groups["params_call"] = ", ".join(param.split()[-1] for param in params)
     formatted = TEST_FILE_TEMPLATE.format(**groups)
 
     with open("test.c", "w", encoding="utf-8") as file:

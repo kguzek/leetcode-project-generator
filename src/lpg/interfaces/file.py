@@ -23,16 +23,15 @@ def create_project_directory(project_path: str, force: bool):
 def create_project(
     project_name: str, project_directory: str, template_data: dict, force: bool
 ):
-    """Creates the entire project."""
+    """Creates the entire project. Returns the path that it was created in."""
 
     language_code = template_data["langSlug"]
     language_name = template_data["lang"]
     template = template_data["code"]
 
-    project_path = os.path.expanduser(
-        os.path.join(
-            project_directory.format(language_name=language_name), project_name
-        )
+    project_path = os.path.join(
+        os.path.expanduser(project_directory.format(language_name=language_name)),
+        project_name,
     )
     create_project_directory(project_path, force)
     os.chdir(project_path)
@@ -42,3 +41,4 @@ def create_project(
             c.create_c_project(template)
         case "*":
             raise ClickException(f"{language_name} projects are currently unsupported.")
+    return project_path

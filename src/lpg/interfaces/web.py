@@ -93,6 +93,4 @@ def get_leetcode_template(title_slug: str, url: str, lang: str):
     request = _create_graphql_request(title_slug)
     body = _get_body_from_request(request)
     template_data = _get_template_data_from_body(body, lang)
-    with open("a.json", "w", encoding="utf-8") as file:
-        json.dump(template_data, file)
     return title_slug, template_data
