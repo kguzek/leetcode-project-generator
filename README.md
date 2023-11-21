@@ -3,12 +3,18 @@
 A CLI tool created using [Click](https://click.palletsprojects.com/en/8.1.x/).
 This utility creates a barebones project template from the URL of a LeetCode problem.
 
-## Usage
-
-Ensure the package is recognised on PYTHONPATH, and invoke using the command:
+## Installation
 
 ```sh
-python lpg.py (--title_slug <problem title> | --url <problem url>) [--directory <project directory>] [--lang <language>] [--force] [--git-init]
+python -m pip install setuptools, build
+python -m build
+python -m pip install ./dist/lpg-*-py3-none-any.whl
+```
+
+## Usage
+
+```sh
+python -m lpg (--title_slug <problem title> | --url <problem url>) [--directory <project directory>] [--lang <language>] [--force] [--git-init]
 ```
 
 "Title slug" refers to the dashed title of the LeetCode problem which can be found in the URL of the problem.
@@ -23,7 +29,7 @@ The project will be created in its own directory with the name of the title slug
 For more syntax help, use the `help` option.
 
 ```sh
-python lpg.py --help
+python -m lpg --help
 ```
 
 Planned available languages:

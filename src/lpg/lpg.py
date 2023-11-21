@@ -9,8 +9,8 @@ import subprocess
 
 import click
 
-from interfaces import web as web_interface
-from interfaces import file as file_interface
+from .interfaces import web as web_interface
+from .interfaces import file as file_interface
 
 # TODO: Update
 SUPPORTED_LANGUAGES = ["c"]
