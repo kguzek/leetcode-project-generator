@@ -7,6 +7,7 @@ HEADER_FILE_TEMPLATE = "{returnType} {name}({params});"
 
 TEST_FILE_TEMPLATE = """\
 #include <stdio.h>
+#include "solution.h"
 
 int main() {{
     {param_declarations};
