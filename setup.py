@@ -1,7 +1,10 @@
+"""Setup file for LPG."""
+
 import setuptools
 
-module_name = "lpg"
+MODULE_NAME = "lpg"
+
 setuptools.setup(
-    name=module_name,
-    py_modules=[module_name],
+    name=MODULE_NAME,
+    py_modules=[MODULE_NAME],
 )

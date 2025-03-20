@@ -56,4 +56,4 @@ Planned available languages:
 - erlang
 - elixir
 
-###### Thanks for reading!
+Thanks for reading!

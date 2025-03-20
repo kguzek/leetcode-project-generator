@@ -30,7 +30,10 @@ query questionEditorData($titleSlug: String!) {
   }
 }
 """
-FAKE_USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11"
+FAKE_USER_AGENT = (
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 "
+    "(KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11"
+)
 
 
 def _validate_title_slug(title_slug: str) -> str:
@@ -60,11 +63,12 @@ def _create_graphql_request(title_slug: str):
 
 def _get_body_from_request(request: urllib.request.Request) -> dict:
     try:
-        response: HTTPResponse = urllib.request.urlopen(request)
+        with urllib.request.urlopen(request) as res:
+            response: HTTPResponse = res
+            text = response.read()
     except urllib.error.URLError as error:
         print(str(error))
-        raise ClickException(f"Could not get data from API.") from error
-    text = response.read()
+        raise ClickException("Could not get data from API.") from error
     body: str = text.decode("utf-8")
     data = json.loads(body)
     return data
@@ -74,17 +78,19 @@ def _get_template_data_from_body(body: dict, lang: str) -> dict[str, any]:
     question = body["data"]["question"]
     try:
         code_snippets = question["codeSnippets"]
-    except TypeError:
-        raise ClickException("Invalid title slug.")
+    except TypeError as type_error:
+        raise ClickException("Invalid title slug.") from type_error
     for lang_data in code_snippets:
         if lang_data["langSlug"] != lang:
             continue
         return lang_data
-    else:
-        raise ClickException(f"Invalid code language '{lang}'.")
+    raise ClickException(f"Invalid code language '{lang}'.")
 
 
-def get_leetcode_template(title_slug: str, url: str, lang: str):
+def get_leetcode_template(
+    lang: str, title_slug: str | None = None, url: str | None = None
+):
+    """Fetches the LeetCode problem code template for the given language."""
     if url is None:
         if title_slug is None:
             raise ClickException("Either url or title slug must be specified.")

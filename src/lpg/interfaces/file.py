@@ -1,10 +1,13 @@
 """API for accessing various OS and filesystem functions."""
 
-
 import os
 from click import ClickException
 
-from .lang import c
+from .lang.c import CLanguageInterface
+
+LANGUAGE_INTERFACES = {
+    "c": CLanguageInterface(),
+}
 
 
 def create_project_directory(project_path: str, force: bool):
@@ -36,9 +39,8 @@ def create_project(
     create_project_directory(project_path, force)
     os.chdir(project_path)
 
-    match language_code:
-        case "c":
-            c.create_c_project(template)
-        case "*":
-            raise ClickException(f"{language_name} projects are currently unsupported.")
+    interface = LANGUAGE_INTERFACES.get(language_code)
+    if interface is None:
+        raise ClickException(f"Unsupported language {language_name}.")
+    interface.create_project(template)
     return project_path

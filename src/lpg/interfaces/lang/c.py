@@ -1,7 +1,7 @@
 """Project generator for the C language."""
 
-
 import re
+from .base import BaseLanguageInterface
 
 HEADER_FILE_TEMPLATE = "{returnType} {name}({params});"
 
@@ -18,29 +18,31 @@ int main() {{
 """
 
 FUNCTION_SIGNATURE_PATTERN = re.compile(
-    r"^(?P<returnType>(?:struct )?\w+(?:\[\]|\*)?) (?P<name>\w+)\((?P<params>(?:(?:struct )?\w+(?:\[\]|\*)? \w+(?:, )?)+)\)\s?{$",
+    r"^(?P<returnType>(?:struct )?\w+(?:\[\]|\*\*?)?) (?P<name>\w+)\((?P<params>(?:(?:struct )?\w+(?:\[\]|\*\*?)? \w+(?:, )?)+)\)\s?{$",
     flags=re.MULTILINE,
 )
 
 
-def create_c_project(template: str):
-    """Creates the project template for C."""
+class CLanguageInterface(BaseLanguageInterface):
+    """Implementation of the C language project template interface."""
 
-    match = FUNCTION_SIGNATURE_PATTERN.search(template)
-    if match is None:
-        raise RuntimeError("Fatal error: project template doesn't match regex.")
-    groups = match.groupdict()
+    function_signature_pattern = FUNCTION_SIGNATURE_PATTERN
 
-    with open("solution.c", "w", encoding="utf-8") as file:
-        file.write(template + "\n")
+    def write_project_files(self, template: str):
+        """Creates the project template for C."""
 
-    with open("solution.h", "w", encoding="utf-8") as file:
-        file.write(HEADER_FILE_TEMPLATE.format(**groups))
+        with open("solution.c", "w", encoding="utf-8") as file:
+            file.write(template + "\n")
 
-    params = groups["params"].split(", ")
-    groups["param_declarations"] = groups["params"].replace(", ", ";\n    ")
-    groups["params_call"] = ", ".join(param.split()[-1] for param in params)
-    formatted = TEST_FILE_TEMPLATE.format(**groups)
+        with open("solution.h", "w", encoding="utf-8") as file:
+            file.write(HEADER_FILE_TEMPLATE.format(**self.groups))
 
-    with open("test.c", "w", encoding="utf-8") as file:
-        file.write(formatted)
+        params = self.groups["params"].split(", ")
+        self.groups["param_declarations"] = self.groups["params"].replace(
+            ", ", ";\n    "
+        )
+        self.groups["params_call"] = ", ".join(param.split()[-1] for param in params)
+        formatted = TEST_FILE_TEMPLATE.format(**self.groups)
+
+        with open("test.c", "w", encoding="utf-8") as file:
+            file.write(formatted)

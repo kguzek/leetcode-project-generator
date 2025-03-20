@@ -1,25 +1,39 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = [
+  "setuptools>=61.0",
+]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "lpg"
-version = "1.0.3"
-authors = [{ name = "Konrad Guzek", email = "konrad@guzek.uk" }]
+version = "1.1.0"
+authors = [
+  { name = "Konrad Guzek", email = "konrad@guzek.uk" },
+]
 description = "A LeetCode project template generator."
 readme = "README.md"
-requires-python = ">=3.10"
 classifiers = [
   "Programming Language :: Python :: 3",
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
 ]
+requires-python = ">=3.10"
+dependencies = [
+  "click",
+]
 
 [tool.setuptools.packages.find]
-where = ["src"]
-include = ["lpg*"]
+where = [
+  "src",
+]
+include = [
+  "lpg*",
+]
 namespaces = false
 
 [project.urls]
-Homepage = "https://github.com/kguzek/leetcode-project-generator"
+Homepage = "https://github.com/kguzek/leetcode-project-generator#readme"
 Issues = "https://github.com/kguzek/leetcode-project-generator/issues"
+
+[project.scripts]
+lpg = "lpg.lpg:lpg"
