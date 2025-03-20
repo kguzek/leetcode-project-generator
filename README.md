@@ -5,6 +5,14 @@ This utility creates a barebones project template from the URL of a LeetCode pro
 
 ## Installation
 
+### From PyPI
+
+```sh
+pip install leetcode-project-generator
+```
+
+### From source
+
 ```sh
 python -m pip install setuptools, build
 python -m build
@@ -13,9 +21,19 @@ python -m pip install ./dist/lpg-*-py3-none-any.whl
 
 ## Usage
 
+### Installed package
+
+```sh
+lpg (--title_slug <problem title> | --url <problem url>) [--directory <project directory>] [--lang <language>] [--force] [--git-init]
+```
+
+### From source
+
 ```sh
 python -m lpg (--title_slug <problem title> | --url <problem url>) [--directory <project directory>] [--lang <language>] [--force] [--git-init]
 ```
+
+### Explanation
 
 "Title slug" refers to the dashed title of the LeetCode problem which can be found in the URL of the problem.
 E.g. for [https://leetcode.com/problems/two-sum/](https://leetcode.com/problems/two-sum/), the title slug is `two-sum`.
@@ -36,24 +54,24 @@ python -m lpg --help
 
 Planned available languages:
 
-- python
-- python3
-- javascript
-- typescript
-- c
-- cpp
-- csharp
-- java
-- php
-- swift
-- kotlin
-- dart
-- golang
-- ruby
-- scala
-- rust
-- racket
-- erlang
-- elixir
+- [ ] python
+- [ ] python3
+- [ ] javascript
+- [ ] typescript
+- [x] c
+- [ ] cpp
+- [ ] csharp
+- [ ] java
+- [ ] php
+- [ ] swift
+- [ ] kotlin
+- [ ] dart
+- [ ] golang
+- [ ] ruby
+- [ ] scala
+- [ ] rust
+- [ ] racket
+- [ ] erlang
+- [ ] elixir
 
 Thanks for reading!
