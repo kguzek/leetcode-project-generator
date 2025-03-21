@@ -4,16 +4,23 @@ import re
 from .base import BaseLanguageInterface
 
 FUNCTION_SIGNATURE_PATTERN = re.compile(
-    r"^def (?P<name>\w+)\((?P<params>[\w\s,=]*)\) -> (?P<returnType>\w+):$",
+    r"^(class Solution:\n)?\s*def (?P<name>\w+)\((?P<params>[^)]*)\) -> (?P<returnType>[^:]+):$",
     flags=re.MULTILINE,
 )
 
+# LeetCode uses Typing types, not Python 3.9+ types
+TYPING_IMPORT_TEMPLATE = "from typing import *\n\n"
+
 TEST_FILE_TEMPLATE = """\
+from solution import Solution
+
+
 if __name__ == "__main__":
     {params_setup}
-    result = {name}({params_call})
+    result = Solution().{name}({params_call})
     print("result:", result)
 """
+
 
 class Python3LanguageInterface(BaseLanguageInterface):
     """Implementation of the Python 3 language project template interface."""
@@ -24,16 +31,25 @@ class Python3LanguageInterface(BaseLanguageInterface):
         """Creates the project template for Python 3."""
 
         with open("solution.py", "w", encoding="utf-8") as file:
-            file.write(template + "\n")
+            file.write(f"{TYPING_IMPORT_TEMPLATE}\n{template}pass\n")
 
-        params = self.groups["params"].split(", ") if self.groups["params"] else []
-        self.groups["params_setup"] = "\n    ".join(
-            f"{param.split('=')[0]} = 0" for param in params if param
+        params = (
+            [
+                param
+                for param in self.groups["params"].split(", ")
+                if param and param != "self"
+            ]
+            if self.groups["params"]
+            else []
         )
-        self.groups["params_call"] = ", ".join(param.split('=')[0] for param in params)
+        self.groups["params_setup"] = "\n    ".join(
+            param if "=" in param else f"{param} = None" for param in params
+        )
+        self.groups["params_call"] = ", ".join(
+            param.split("=")[0].split(":")[0].strip() for param in params
+        )
 
         formatted = TEST_FILE_TEMPLATE.format(**self.groups)
 
         with open("test.py", "w", encoding="utf-8") as file:
-            file.write(formatted)
-
+            file.write(f"{TYPING_IMPORT_TEMPLATE}{formatted}")
