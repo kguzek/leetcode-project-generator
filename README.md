@@ -24,13 +24,13 @@ python -m pip install ./dist/lpg-*-py3-none-any.whl
 ### Installed package
 
 ```sh
-lpg (--title_slug <problem title> | --url <problem url>) [--directory <project directory>] [--lang <language>] [--force] [--git-init]
+lpg (--title_slug <problem title> | --url <problem url>) [--directory <project directory>] [--lang <language>] [--force] [--git-init] [--git-commit] [--git-commit-message <message>]
 ```
 
 ### Local package
 
 ```sh
-python -m lpg (--title_slug <problem title> | --url <problem url>) [--directory <project directory>] [--lang <language>] [--force] [--git-init]
+python -m lpg (--title_slug <problem title> | --url <problem url>) [--directory <project directory>] [--lang <language>] [--force] [--git-init] [--git-commit] [--git-commit-message <message>]
 ```
 
 ### Explanation

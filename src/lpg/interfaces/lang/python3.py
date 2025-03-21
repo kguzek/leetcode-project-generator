@@ -27,12 +27,7 @@ class Python3LanguageInterface(BaseLanguageInterface):
 
     function_signature_pattern = FUNCTION_SIGNATURE_PATTERN
 
-    def write_project_files(self, template: str):
-        """Creates the project template for Python 3."""
-
-        with open("solution.py", "w", encoding="utf-8") as file:
-            file.write(f"{TYPING_IMPORT_TEMPLATE}\n{template}pass\n")
-
+    def prepare_project_files(self, template: str):
         params = (
             [
                 param
@@ -49,7 +44,7 @@ class Python3LanguageInterface(BaseLanguageInterface):
             param.split("=")[0].split(":")[0].strip() for param in params
         )
 
-        formatted = TEST_FILE_TEMPLATE.format(**self.groups)
-
-        with open("test.py", "w", encoding="utf-8") as file:
-            file.write(f"{TYPING_IMPORT_TEMPLATE}{formatted}")
+        return {
+            "solution.py": f"{TYPING_IMPORT_TEMPLATE}\n{template}pass\n",
+            "test.py": f"{TYPING_IMPORT_TEMPLATE}{TEST_FILE_TEMPLATE.format(**self.groups)}",
+        }

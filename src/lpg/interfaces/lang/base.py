@@ -17,8 +17,8 @@ class BaseLanguageInterface:
         """Returns the function signature regular expression pattern."""
 
     @abstractmethod
-    def write_project_files(self, template: str) -> None:
-        """Writes the project files."""
+    def prepare_project_files(self, template: str) -> dict[str, str]:
+        """Generates a dictionary of filenames to file contents."""
 
     def create_project(self, template: str) -> None:
         """Creates the project template."""
@@ -29,4 +29,6 @@ class BaseLanguageInterface:
             )
         self.groups = self.match.groupdict()
 
-        self.write_project_files(template)
+        for filename, content in self.prepare_project_files(template).items():
+            with open(filename, "w", encoding="utf-8") as file:
+                file.write(content)

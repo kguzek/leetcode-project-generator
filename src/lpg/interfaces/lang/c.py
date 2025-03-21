@@ -28,14 +28,7 @@ class CLanguageInterface(BaseLanguageInterface):
 
     function_signature_pattern = FUNCTION_SIGNATURE_PATTERN
 
-    def write_project_files(self, template: str):
-        """Creates the project template for C."""
-
-        with open("solution.c", "w", encoding="utf-8") as file:
-            file.write(template + "\n")
-
-        with open("solution.h", "w", encoding="utf-8") as file:
-            file.write(HEADER_FILE_TEMPLATE.format(**self.groups))
+    def prepare_project_files(self, template: str):
 
         params = self.groups["params"].split(", ")
         self.groups["param_declarations"] = self.groups["params"].replace(
@@ -44,5 +37,8 @@ class CLanguageInterface(BaseLanguageInterface):
         self.groups["params_call"] = ", ".join(param.split()[-1] for param in params)
         formatted = TEST_FILE_TEMPLATE.format(**self.groups)
 
-        with open("test.c", "w", encoding="utf-8") as file:
-            file.write(formatted)
+        return {
+            "solution.c": f"{template}\n",
+            "solution.h": HEADER_FILE_TEMPLATE.format(**self.groups),
+            "test.c": formatted,
+        }
