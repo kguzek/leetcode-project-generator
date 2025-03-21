@@ -76,21 +76,30 @@ def _get_body_from_request(request: urllib.request.Request) -> dict:
     return data
 
 
-def _get_template_data_from_body(body: dict, lang: str) -> dict[str, any]:
+def get_code_snippets(title_slug: str) -> list[dict[str, str]]:
+    """Fetches all code snippets for the given LeetCode problem."""
+    request = _create_graphql_request(title_slug)
+    body = _get_body_from_request(request)
     question = body["data"]["question"]
     try:
         code_snippets = question["codeSnippets"]
     except TypeError as type_error:
         raise ClickException("Invalid title slug.") from type_error
+    return code_snippets
+
+
+def _get_template_data(title_slug, language: str):
+    code_snippets = get_code_snippets(title_slug)
+
     for lang_data in code_snippets:
-        if lang_data["langSlug"] != lang:
+        if lang_data["langSlug"] != language:
             continue
         return lang_data
-    raise ClickException(f"Invalid code language '{lang}'.")
+    raise ClickException(f"Invalid programming language '{language}'.")
 
 
 def get_leetcode_template(
-    lang: str, title_slug: str | None = None, url: str | None = None
+    language: str, title_slug: str | None = None, url: str | None = None
 ):
     """Fetches the LeetCode problem code template for the given language."""
     if url is None:
@@ -98,7 +107,5 @@ def get_leetcode_template(
             raise ClickException("Either url or title slug must be specified.")
     else:
         title_slug = _get_title_slug(url)
-    request = _create_graphql_request(title_slug)
-    body = _get_body_from_request(request)
-    template_data = _get_template_data_from_body(body, lang)
+    template_data = _get_template_data(title_slug, language)
     return title_slug, template_data

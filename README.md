@@ -90,4 +90,21 @@ Planned available languages:
 - [ ] erlang
 - [ ] elixir
 
+## Contributing
+
+Know any of the above langauges and want to help out? Your contributions will be greatly appreciated!
+
+For more information on how to implement the language interface, refer to [this issue](https://github.com/kguzek/leetcode-project-generator/issues/1).
+Then, fork this repository, make your changes and [submit them as a pull request](https://github.com/kguzek/leetcode-project-generator/compare).
+
+### Testing
+
+You can test all registered language interfaces (including your implementation) by running the test file found at [src/lpg/interfaces/lang_test.py](src/lpg/interfaces/lang_test.py):
+
+```sh
+python -m unittest src.lpg.interfaces.lang_test
+```
+
+This uses the builtin `unittest` module and executes project generation for each language against an arbitrary list of LeetCode problems in a temporary directory, which is then cleaned up.
+
 Thanks for reading!

@@ -1,12 +1,14 @@
 """API for accessing various OS and filesystem functions."""
 
 import os
+
 from click import ClickException
 
+from .lang.base import BaseLanguageInterface
 from .lang.c import CLanguageInterface
 from .lang.python3 import Python3LanguageInterface
 
-LANGUAGE_INTERFACES = {
+LANGUAGE_INTERFACES: dict[str, BaseLanguageInterface] = {
     "c": CLanguageInterface(),
     "python3": Python3LanguageInterface(),
 }
@@ -27,7 +29,10 @@ def create_project_directory(project_path: str, force: bool):
 
 
 def create_project(
-    project_name: str, project_directory: str, template_data: dict, force: bool
+    project_name: str,
+    project_directory: str,
+    template_data: dict[str, str],
+    force: bool,
 ):
     """Creates the entire project. Returns the path that it was created in."""
 
