@@ -9,10 +9,8 @@ import subprocess
 
 import click
 
-from .interfaces import web as web_interface
-from .interfaces import file as file_interface
-
-SUPPORTED_LANGUAGES = ["c"]
+from .interfaces.web import get_leetcode_template, is_title_slug
+from .interfaces.file import create_project, LANGUAGE_INTERFACES
 
 DEFAULT_PROJECT_LANGUAGE = "c"
 DEFAULT_PROJECT_DIRECTORY = R"~/Documents/Coding/{language_name}/leetcode/"
@@ -57,7 +55,10 @@ DEFAULT_PROJECT_DIRECTORY = R"~/Documents/Coding/{language_name}/leetcode/"
     is_flag=True,
     show_default=False,
 )
+@click.help_option("--help", "-h")
+@click.argument("url_or_slug", required=False)
 def lpg(
+    url_or_slug: str | None = None,
     title_slug: str | None = None,
     url: str | None = None,
     lang: str = DEFAULT_PROJECT_LANGUAGE,
@@ -65,13 +66,17 @@ def lpg(
     force: bool = True,
     git_init: bool = False,
 ):
-    """CLI Entry point."""
-    if lang not in SUPPORTED_LANGUAGES:
+    """Creates a LeetCode skeleton project from the given problem URL or
+    title slug in the specified programming language."""
+    if lang not in LANGUAGE_INTERFACES:
         raise click.ClickException(f"{lang} projects are currently unsupported.")
-    title_slug, template_data = web_interface.get_leetcode_template(
-        lang, title_slug, url
-    )
-    path = file_interface.create_project(title_slug, directory, template_data, force)
+    if url_or_slug is not None:
+        if is_title_slug(url_or_slug):
+            title_slug = url_or_slug
+        else:
+            url = url_or_slug
+    title_slug, template_data = get_leetcode_template(lang, title_slug, url)
+    path = create_project(title_slug, directory, template_data, force)
     if git_init:
         subprocess.run("git init", check=True)
     click.echo(f"Successfully created project at {path}!")

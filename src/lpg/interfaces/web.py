@@ -36,10 +36,12 @@ FAKE_USER_AGENT = (
 )
 
 
-def _validate_title_slug(title_slug: str) -> str:
+def is_title_slug(title_slug: str) -> bool:
+    """Checks if the value matches the title slug pattern."""
     match = TITLE_SLUG_PATTERN.fullmatch(title_slug)
-    if match is None:
-        raise ClickException(f"Invalid title slug '{title_slug}'.")
+    return match is not None
+    # if match is None:
+    #     raise ClickException(f"Invalid title slug '{title_slug}'.")
 
 
 def _get_title_slug(problem_url: str) -> str:

@@ -19,6 +19,7 @@ def create_project_directory(project_path: str, force: bool):
             f"Cannot create project with path '{project_path}' as it already exists."
         ) from error
     except OSError as error:
+        print(error)
         raise ClickException(f"Invalid project path '{project_path}'") from error
     return project_path
 
