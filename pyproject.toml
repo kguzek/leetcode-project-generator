@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "leetcode-project-generator"
-version = "1.1.2"
+version = "1.2.0"
 authors = [
   { name = "Konrad Guzek", email = "konrad@guzek.uk" },
 ]
