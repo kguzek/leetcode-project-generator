@@ -4,9 +4,11 @@ import os
 from click import ClickException
 
 from .lang.c import CLanguageInterface
+from .lang.python3 import Python3LanguageInterface
 
 LANGUAGE_INTERFACES = {
     "c": CLanguageInterface(),
+    "python3": Python3LanguageInterface(),
 }
 
 
