@@ -11,7 +11,7 @@ FUNCTION_SIGNATURE_PATTERN = re.compile(
 
 TEST_FILE_TEMPLATE = """\
 import solution from "./solution.js";
-{params_setup}
+{supplemental_code}{params_setup}
 const result = {await}solution({params});
 console.log("{OUTPUT_RESULT_PREFIX}", result);
 """
@@ -32,6 +32,6 @@ class JavaScriptLanguageInterface(BaseLanguageInterface):
                 self.groups["params_setup"] += f"\nconst {param} = undefined;"
         self.groups["await"] = "await " if self.groups["async"] else ""
         return {
-            "solution.js": f"{template}\nexport default {self.groups['name']};",
+            "solution.js": f"{template}\n\nexport default {self.groups['name']};",
             "test.js": TEST_FILE_TEMPLATE.format(**self.groups),
         }

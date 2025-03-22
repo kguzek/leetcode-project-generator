@@ -44,7 +44,7 @@ class BaseLanguageInterface(metaclass=ABCMeta):
         """Generates a dictionary of filenames to file contents."""
 
     def create_project(self, template: str) -> None:
-        """Creates the project template."""
+        """Writes the appropriate project template files in the current directory."""
         self.match = self.function_signature_pattern.search(template)
         if self.match is None:
             raise RuntimeError(
@@ -52,6 +52,9 @@ class BaseLanguageInterface(metaclass=ABCMeta):
             )
         self.groups = self.match.groupdict()
         self.groups["OUTPUT_RESULT_PREFIX"] = OUTPUT_RESULT_PREFIX
+        self.groups["supplemental_code"] = self.add_newline(
+            self.get_supplemental_code(template)
+        )
 
         for filename, content in self.prepare_project_files(template).items():
             with open(filename, "w", encoding="utf-8") as file:
@@ -70,3 +73,14 @@ class BaseLanguageInterface(metaclass=ABCMeta):
             for match in (COMMENT_PATTERN.match(line) for line in commented_code)
             if match is not None
         )
+
+    def add_newline(
+        self, value: str | None, num_newlines: int = 1, prefix: str = ""
+    ) -> str:
+        """If the value is a non-empty string, adds the specified number of newline
+        characters at the end (default 1). Adds the optional prefix before the value."""
+        if not int.is_integer(num_newlines):
+            raise ValueError("The number of newlines must be an integer.")
+        if num_newlines < 1:
+            raise ValueError("The number of newlines must be at least 1.")
+        return f"{prefix}{value}{'\n' * num_newlines}" if value else ""

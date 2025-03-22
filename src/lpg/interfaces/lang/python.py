@@ -12,7 +12,6 @@ FUNCTION_SIGNATURE_PATTERN = re.compile(
 TEST_FILE_TEMPLATE = """\
 from solution import Solution
 
-
 {supplemental_code}if __name__ == "__main__":
     {params_setup}
     result = Solution().{name}({params_call})
@@ -44,12 +43,10 @@ class PythonLanguageInterface(BaseLanguageInterface):
         self.groups["params_call"] = ", ".join(
             param.split("=")[0].split(":")[0].strip() for param in params
         )
-
-        supplemental_code = self.get_supplemental_code(template)
-        supplemental_code = (
-            "" if supplemental_code is None else f"{supplemental_code}\n\n\n"
+        supplemental_code = self.add_newline(self.groups["supplemental_code"], 2)
+        self.groups["supplemental_code"] = self.add_newline(
+            self.groups["supplemental_code"], 2, "\n"
         )
-        self.groups["supplemental_code"] = supplemental_code
         return {
             "solution.py": f"{supplemental_code}{template}pass\n",
             "test.py": TEST_FILE_TEMPLATE.format(**self.groups),

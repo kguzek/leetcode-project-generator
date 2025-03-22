@@ -42,6 +42,10 @@ TEST_CASES = [
     "two-sum",
 ]
 
+# Enable this if you do not have programs like `gcc`, `node`, `typescript`, etc. installed.
+SKIP_MISSING_COMPILERS = False
+"""Skips the test case for a given language if the compiler/interpreter is not installed."""
+
 
 class TestProjectGeneration(unittest.TestCase):
     """Test case for the project generation process."""
@@ -56,11 +60,16 @@ class TestProjectGeneration(unittest.TestCase):
 
             # print(f"Testing {language} interface...")
             interface.create_project(template_data["code"])
-            if interface.compile_command is not None:
-                subprocess.run(interface.compile_command, check=True)
-            result = subprocess.run(
-                interface.test_command, check=True, capture_output=True
-            )
+            try:
+                if interface.compile_command is not None:
+                    subprocess.run(interface.compile_command, check=True)
+                result = subprocess.run(
+                    interface.test_command, check=True, capture_output=True
+                )
+            except FileNotFoundError:
+                if not SKIP_MISSING_COMPILERS:
+                    raise
+                continue
             self.assertMultiLineEqual(
                 result.stdout.decode().strip(),
                 f"{OUTPUT_RESULT_PREFIX} {interface.default_output}",
