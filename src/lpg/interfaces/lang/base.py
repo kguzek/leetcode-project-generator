@@ -2,7 +2,7 @@
 
 import re
 from abc import ABCMeta, abstractmethod
-from typing import Any, Match, Pattern
+from typing import Any, Callable, Match, Pattern
 
 from ...constants import OUTPUT_RESULT_PREFIX
 
@@ -73,6 +73,20 @@ class BaseLanguageInterface(metaclass=ABCMeta):
             for match in (COMMENT_PATTERN.match(line) for line in commented_code)
             if match is not None
         )
+
+    def get_formatted_nonvoid_template(
+        self, template: str, nonvoid_callback: Callable[[], str]
+    ) -> str:
+        """Adjusts the return type and method call when the return type is void.
+        Useful for C-style languages where assigning to a void variable is not allowed.
+        """
+        if self.groups["returnType"] == "void":
+            self.groups["result_var_declaration"] = ""
+            self.groups["result_var"] = "0"
+            return template
+        self.groups["result_var_declaration"] = f"{self.groups['returnType']} result = "
+        self.groups["result_var"] = "result"
+        return nonvoid_callback()
 
     def add_newline(
         self, value: str | None, num_newlines: int = 1, prefix: str = ""

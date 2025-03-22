@@ -66,20 +66,14 @@ class JavaLanguageInterface(BaseLanguageInterface):
         )
         self.groups["params_call"] = ", ".join(param.split()[-1] for param in params)
 
-        if self.groups["returnType"] == "void":
-            self.groups["result_var_declaration"] = ""
-            self.groups["result_var"] = "0"
-            formatted_template = template
-        else:
-            self.groups["result_var_declaration"] = (
-                f"{self.groups['returnType']} result = "
-            )
-            self.groups["result_var"] = "result"
-            formatted_template = re.sub(
+        formatted_template = self.get_formatted_nonvoid_template(
+            template,
+            lambda: re.sub(
                 SOLUTION_REPLACEMENT_PATTERN,
                 SOLUTION_REPLACEMENT_TEMPLATE.format(return_value=self.default_output),
                 template,
-            )
+            ),
+        )
 
         project_files = {
             "Solution.java": f"{UTIL_IMPORT_TEMPLATE}{formatted_template}\n",

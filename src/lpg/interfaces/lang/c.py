@@ -49,18 +49,12 @@ class CLanguageInterface(BaseLanguageInterface):
         if headers != "":
             headers += "\n"
 
-        if self.groups["returnType"] == "void":
-            self.groups["result_var_declaration"] = ""
-            self.groups["result_var"] = "0"
-            formatted_template = template
-        else:
-            self.groups["result_var_declaration"] = (
-                f"{self.groups['returnType']} result = "
-            )
-            self.groups["result_var"] = "result"
-            formatted_template = re.sub(
+        formatted_template = self.get_formatted_nonvoid_template(
+            template,
+            lambda: re.sub(
                 SOLUTION_REPLACEMENT_PATTERN, SOLUTION_REPLACEMENT_TEMPLATE, template
-            )
+            ),
+        )
 
         return {
             "solution.c": f"{headers}{formatted_template}\n",
