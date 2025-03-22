@@ -1,7 +1,9 @@
 # LeetCode Project Generator
 
+## Practice LeetCode Locally with Ease
+
+LPG is a powerful tool that facilitates the generation of local solution and test files for LeetCode problems. Say goodbye to the web-based runner and hello to seamless local development. With LPG, you can write, test, and refine your solutions in the comfort of your own environment.
 A CLI tool created using [Click](https://click.palletsprojects.com/en/8.1.x/).
-This utility creates a barebones project template from the URL of a LeetCode problem.
 
 ## Installation
 
@@ -16,10 +18,13 @@ pip install leetcode-project-generator
 ```sh
 python -m pip install setuptools, build
 python -m build
-python -m pip install ./dist/lpg-*-py3-none-any.whl
+python -m pip install ./dist/leetcode_project_generator-*-py3-none-any.whl
 ```
 
 ## Usage
+
+> [!TIP]
+> LPG allows you to generate the project files for a given problem by just copy and pasting the URL from LeetCode!
 
 ### Installed package
 
@@ -38,7 +43,7 @@ python -m lpg (--title_slug <problem title> | --url <problem url>) [--directory 
 "Title slug" refers to the dashed title of the LeetCode problem which can be found in the URL of the problem.
 E.g. for <https://leetcode.com/problems/two-sum/description/>, the title slug is `two-sum`.
 
-The default language is C. Other languages are currently unsupported.
+The default language is C. For an updated list of supported languages, refer to [the roadmap](https://github.com/kguzek/leetcode-project-generator#roadmap) or [the related issue](https://github.com/kguzek/leetcode-project-generator/issues/1).
 If using Bash, you must surround the URL with quotes, since the `&` symbol would be interpreted as an asynchronous command.
 
 The project directory defaults to `~/Documents/Coding/{language_name}/`. You may use use the template `{language_name}` when specifying the directory, and this will automatically be translated into the name of the language specified using `--lang`. E.g.: `cpp -> C++`.

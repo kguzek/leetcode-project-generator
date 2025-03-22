@@ -9,8 +9,8 @@ import subprocess
 
 import click
 
+from .interfaces.file import LANGUAGE_INTERFACES, create_project
 from .interfaces.web import get_leetcode_template, is_title_slug
-from .interfaces.file import create_project, LANGUAGE_INTERFACES
 
 DEFAULT_PROJECT_LANGUAGE = "c"
 DEFAULT_PROJECT_DIRECTORY = R"~/Documents/Coding/{language_name}/leetcode/"
@@ -77,6 +77,13 @@ DEFAULT_COMMIT_MESSAGE = "initialise project {problem_name}"
     show_default=True,
 )
 @click.help_option("--help", "-h")
+@click.version_option(
+    None,
+    "--version",
+    "-v",
+    package_name="leetcode-project-generator",
+    message="LeetCode Project Generator version %(version)s by Konrad Guzek",
+)
 @click.argument("url_or_slug", required=False)
 def lpg(  # pylint: disable=too-many-arguments, too-many-positional-arguments
     url_or_slug: str | None = None,
