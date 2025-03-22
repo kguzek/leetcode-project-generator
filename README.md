@@ -77,7 +77,7 @@ Planned available languages:
 - [x] c
 - [ ] cpp
 - [ ] csharp
-- [ ] java
+- [x] java
 - [ ] php
 - [ ] swift
 - [ ] kotlin
