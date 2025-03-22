@@ -11,9 +11,11 @@ from .lang.javascript import JavaScriptLanguageInterface
 from .lang.python import PythonLanguageInterface
 from .lang.python3 import Python3LanguageInterface
 from .lang.typescript import TypeScriptLanguageInterface
+from .lang.golang import GoLanguageInterface
 
 LANGUAGE_INTERFACES: dict[str, BaseLanguageInterface] = {
     "c": CLanguageInterface(),
+    "g": GoLanguageInterface(),
     "java": JavaLanguageInterface(),
     "javascript": JavaScriptLanguageInterface(),
     "typescript": TypeScriptLanguageInterface(),
