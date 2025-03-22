@@ -92,22 +92,24 @@ class GoLanguageInterface(BaseLanguageInterface):
         """Returns a default value for the given Go type."""
         param_type = param_type.strip()
 
-        if "int" in param_type:
-            return "0"
-        elif "float" in param_type or "double" in param_type:
-            return "0.0"
-        elif "string" in param_type:
-            return '""'
-        elif "bool" in param_type:
-            return "false"
-        elif "[]" in param_type:  # array/slice
+        switch_dict = {
+            "int": "0",
+            "float": "0.0",
+            "double": "0.0",
+            "string": '""',
+            "bool": "false",
+        }
+
+        # Check for specific patterns
+        if "[]" in param_type or "map" in param_type or "*" in param_type:
             return "nil"
-        elif "map" in param_type:
-            return "nil"
-        elif "*" in param_type:  # pointer
-            return "nil"
-        else:
-            return param_type + "{}"  # struct default
+
+        # Check for simple matches in dictionary
+        for key in switch_dict:
+            if key in param_type:
+                return switch_dict[key]
+
+        return f"{param_type}{{}}"  # Default struct initialization
 
     def _get_default_return(self, return_type: str) -> str:
         """Returns a default return statement for the given Go return type."""
