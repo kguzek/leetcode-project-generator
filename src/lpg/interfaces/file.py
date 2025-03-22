@@ -6,11 +6,13 @@ from click import ClickException
 
 from .lang.base import BaseLanguageInterface
 from .lang.c import CLanguageInterface
+from .lang.javascript import JavaScriptLanguageInterface
 from .lang.python import PythonLanguageInterface
 from .lang.python3 import Python3LanguageInterface
 
 LANGUAGE_INTERFACES: dict[str, BaseLanguageInterface] = {
     "c": CLanguageInterface(),
+    "javascript": JavaScriptLanguageInterface(),
     "python": PythonLanguageInterface(),
     "python3": Python3LanguageInterface(),
 }

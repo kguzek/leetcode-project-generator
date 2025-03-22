@@ -12,7 +12,7 @@ TEST_FILE_TEMPLATE = """\
 #include "solution.h"
 
 int main() {{
-    {param_declarations};
+    {params_setup};
     {result_var_declaration}{name}({params_call});
     printf("{OUTPUT_RESULT_PREFIX} %d\\n", {result_var});
     return 0;
@@ -42,9 +42,7 @@ class CLanguageInterface(BaseLanguageInterface):
     def prepare_project_files(self, template: str):
 
         params = self.groups["params"].split(", ")
-        self.groups["param_declarations"] = self.groups["params"].replace(
-            ", ", ";\n    "
-        )
+        self.groups["params_setup"] = self.groups["params"].replace(", ", ";\n    ")
         self.groups["params_call"] = ", ".join(param.split()[-1] for param in params)
 
         headers = ""

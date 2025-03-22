@@ -72,7 +72,7 @@ Planned available languages:
 
 - [x] python
 - [x] python3 (thanks [@dancikmad](https://github.com/dancikmad))
-- [ ] javascript
+- [x] javascript
 - [ ] typescript
 - [x] c
 - [ ] cpp
