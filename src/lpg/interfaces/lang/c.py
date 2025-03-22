@@ -20,11 +20,8 @@ int main() {{
 """
 
 FUNCTION_SIGNATURE_PATTERN = re.compile(
-    r"""
-    ^(?P<returnType>(?:struct\s)?\w+(?:\[\]|\s?\*+)?)\s(?P<name>\w+)
-    \((?P<params>(?:(?:struct\s)?\w+(?:\[\]|\s?\*+)?\s\w+(?:,\s)?)+)\)\s?{$
-    """,
-    flags=re.MULTILINE | re.VERBOSE,
+    r"^(?P<returnType>(?:struct\s)?\w+(?:\[\]|\s?\*+)?) (?P<name>\w+)\((?P<params>[^)]+)\)\s?{$",
+    flags=re.MULTILINE,
 )
 
 SOLUTION_REPLACEMENT_PATTERN = re.compile(r"\n}")

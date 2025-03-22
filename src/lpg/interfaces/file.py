@@ -6,6 +6,7 @@ from click import ClickException
 
 from .lang.base import BaseLanguageInterface
 from .lang.c import CLanguageInterface
+from .lang.java import JavaLanguageInterface
 from .lang.javascript import JavaScriptLanguageInterface
 from .lang.python import PythonLanguageInterface
 from .lang.python3 import Python3LanguageInterface
@@ -13,6 +14,7 @@ from .lang.typescript import TypeScriptLanguageInterface
 
 LANGUAGE_INTERFACES: dict[str, BaseLanguageInterface] = {
     "c": CLanguageInterface(),
+    "java": JavaLanguageInterface(),
     "javascript": JavaScriptLanguageInterface(),
     "typescript": TypeScriptLanguageInterface(),
     "python": PythonLanguageInterface(),
