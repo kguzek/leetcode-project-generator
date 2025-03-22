@@ -105,9 +105,9 @@ class GoLanguageInterface(BaseLanguageInterface):
             return "nil"
 
         # Check for simple matches in dictionary
-        for key in switch_dict:
+        for key, value in switch_dict.items():
             if key in param_type:
-                return switch_dict[key]
+                return value
 
         return f"{param_type}{{}}"  # Default struct initialization
 
