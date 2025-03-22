@@ -70,7 +70,7 @@ python -m lpg --help
 
 Planned available languages:
 
-- [ ] python
+- [x] python
 - [x] python3 (thanks [@dancikmad](https://github.com/dancikmad))
 - [ ] javascript
 - [ ] typescript
