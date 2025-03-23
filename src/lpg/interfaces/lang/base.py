@@ -74,17 +74,28 @@ class BaseLanguageInterface(metaclass=ABCMeta):
             if match is not None
         )
 
+    def is_void_return_type(self) -> bool:
+        """Determines if the solution function return type is void. Can be overridden."""
+        return self.groups["returnType"] == "void"
+
     def get_formatted_nonvoid_template(
-        self, template: str, nonvoid_callback: Callable[[], str]
+        self,
+        template: str,
+        nonvoid_callback: Callable[[], str],
+        result_var_declaration: str | None = None,
     ) -> str:
         """Adjusts the return type and method call when the return type is void.
         Useful for C-style languages where assigning to a void variable is not allowed.
         """
-        if self.groups["returnType"] == "void":
+        if self.is_void_return_type():
             self.groups["result_var_declaration"] = ""
             self.groups["result_var"] = "0"
             return template
-        self.groups["result_var_declaration"] = f"{self.groups['returnType']} result = "
+        self.groups["result_var_declaration"] = (
+            f"{self.groups['returnType']} result = "
+            if result_var_declaration is None
+            else result_var_declaration
+        )
         self.groups["result_var"] = "result"
         return nonvoid_callback()
 

@@ -72,7 +72,7 @@ class TestProjectGeneration(unittest.TestCase):
                 continue
             self.assertMultiLineEqual(
                 result.stdout.decode().strip(),
-                f"{OUTPUT_RESULT_PREFIX} {interface.default_output}",
+                f"{OUTPUT_RESULT_PREFIX} {interface.default_output}".strip(),
             )
 
 
