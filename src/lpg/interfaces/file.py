@@ -6,16 +6,16 @@ from click import ClickException
 
 from .lang.base import BaseLanguageInterface
 from .lang.c import CLanguageInterface
+from .lang.golang import GoLanguageInterface
 from .lang.java import JavaLanguageInterface
 from .lang.javascript import JavaScriptLanguageInterface
 from .lang.python import PythonLanguageInterface
 from .lang.python3 import Python3LanguageInterface
 from .lang.typescript import TypeScriptLanguageInterface
-from .lang.golang import GoLanguageInterface
 
 LANGUAGE_INTERFACES: dict[str, BaseLanguageInterface] = {
     "c": CLanguageInterface(),
-    "g": GoLanguageInterface(),
+    "golang": GoLanguageInterface(),
     "java": JavaLanguageInterface(),
     "javascript": JavaScriptLanguageInterface(),
     "typescript": TypeScriptLanguageInterface(),
