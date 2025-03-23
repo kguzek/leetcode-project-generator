@@ -87,7 +87,7 @@ Planned available languages:
 - [ ] swift
 - [ ] kotlin
 - [ ] dart
-- [ ] golang
+- [x] golang (thanks [@dancikmad](https://github.com/dancikmad))
 - [ ] ruby
 - [ ] scala
 - [ ] rust
